@@ -3,14 +3,14 @@ import numpy as np
 import scipy.misc as m
 from PIL import Image
 from torch.utils import data
-from mypath import Path
 from torchvision import transforms
-from dataloaders import custom_transforms as tr
+from modules.dataloaders import custom_transforms as tr
+import settings
 
 class CityscapesSegmentation(data.Dataset):
     NUM_CLASSES = 19
 
-    def __init__(self, args, root=Path.db_root_dir('cityscapes'), split="train"):
+    def __init__(self, args, root=settings.root_dir, split="train"):
 
         self.root = root
         self.split = split
@@ -107,7 +107,7 @@ class CityscapesSegmentation(data.Dataset):
         return composed_transforms(sample)
 
 if __name__ == '__main__':
-    from dataloaders.utils import decode_segmap
+    from modules.dataloaders.utils import decode_segmap
     from torch.utils.data import DataLoader
     import matplotlib.pyplot as plt
     import argparse

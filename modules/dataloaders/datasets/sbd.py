@@ -5,17 +5,17 @@ import numpy as np
 import scipy.io
 import torch.utils.data as data
 from PIL import Image
-from mypath import Path
 
 from torchvision import transforms
-from dataloaders import custom_transforms as tr
+from modules.dataloaders import custom_transforms as tr
+import settings
 
 class SBDSegmentation(data.Dataset):
     NUM_CLASSES = 21
 
     def __init__(self,
                  args,
-                 base_dir=Path.db_root_dir('sbd'),
+                 base_dir=settings.root_dir,
                  split='train',
                  ):
         """
@@ -92,7 +92,7 @@ class SBDSegmentation(data.Dataset):
 
 
 if __name__ == '__main__':
-    from dataloaders.utils import decode_segmap
+    from modules.dataloaders.utils import decode_segmap
     from torch.utils.data import DataLoader
     import matplotlib.pyplot as plt
     import argparse
