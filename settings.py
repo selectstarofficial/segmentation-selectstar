@@ -1,3 +1,5 @@
+"""CUDA_VISIBLE_DEVICES=1,2,3 python3 train.py"""
+
 backbone = 'xception'
 out_stride = 16  # network output stride (default: 8)
 use_sbd = False  # whether to use SBD dataset
@@ -6,7 +8,11 @@ base_size = 513  # base image size
 crop_size = 513  # crop image size
 
 cuda = True
-gpu_ids = [1,2,3]  # use which gpu to train
+
+# If you want to use gpu:1,2,3, run CUDA_VISIBLE_DEVICES=1,2,3 python3 ...
+# with gpu_ids option [0,1,2] starting with zero
+gpu_ids = [0,1,2]  # use which gpu to train
+
 sync_bn = True if len(gpu_ids) > 1 else False  # whether to use sync bn
 freeze_bn = False  # whether to freeze bn parameters (default: False)
 
@@ -17,7 +23,7 @@ test_batch_size = 4 * len(gpu_ids)
 
 loss_type = 'ce'  # 'ce': CrossEntropy, 'focal': Focal Loss
 use_balanced_weights = False  # whether to use balanced weights (default: False)
-lr = 1e-3
+lr = 0.01
 lr_scheduler = 'poly'  # lr scheduler mode: ['poly', 'step', 'cos']
 momentum = 0.9
 weight_decay = 5e-4
