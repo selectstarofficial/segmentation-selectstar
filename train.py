@@ -13,6 +13,7 @@ from modules.utils.lr_scheduler import LR_Scheduler
 from modules.utils.saver import Saver
 from modules.utils.summaries import TensorboardSummary
 from modules.utils.metrics import Evaluator
+from modules.utils.torch_logger import TorchLogger
 
 class Trainer(object):
     def __init__(self,):
