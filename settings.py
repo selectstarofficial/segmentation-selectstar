@@ -6,7 +6,7 @@ base_size = 513  # base image size
 crop_size = 513  # crop image size
 
 cuda = True
-gpu_ids = [0]  # use which gpu to train
+gpu_ids = [1,2,3]  # use which gpu to train
 sync_bn = True if len(gpu_ids) > 1 else False  # whether to use sync bn
 freeze_bn = False  # whether to freeze bn parameters (default: False)
 
@@ -40,7 +40,7 @@ elif dataset == 'sbd':
 elif dataset == 'cityscapes':
     root_dir = '/path/to/datasets/cityscapes/'  # foler that contains leftImg8bit/
 elif dataset == 'coco':
-    root_dir = '/path/to/datasets/coco/'
+    root_dir = '/home/super/Projects/dataset/coco/'
 else:
     print('Dataset {} not available.'.format(dataset))
     raise NotImplementedError
