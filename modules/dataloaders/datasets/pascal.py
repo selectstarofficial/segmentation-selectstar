@@ -3,9 +3,9 @@ import os
 from PIL import Image
 import numpy as np
 from torch.utils.data import Dataset
-from mypath import Path
 from torchvision import transforms
-from dataloaders import custom_transforms as tr
+from modules.dataloaders import custom_transforms as tr
+import settings
 
 class VOCSegmentation(Dataset):
     """
@@ -15,7 +15,7 @@ class VOCSegmentation(Dataset):
 
     def __init__(self,
                  args,
-                 base_dir=Path.db_root_dir('pascal'),
+                 base_dir=settings.root_dir,
                  split='train',
                  ):
         """
