@@ -58,14 +58,14 @@ class Trainer(object):
                                             settings.epochs, len(self.train_loader))
 
         # Using cuda
-        if args.cuda:
+        if settings.cuda:
             self.model = torch.nn.DataParallel(self.model, device_ids=settings.gpu_ids)
             patch_replication_callback(self.model)
             self.model = self.model.cuda()
 
         # Resuming checkpoint
         self.best_pred = 0.0
-        if args.resume is not None:
+        if settings.resume is not None:
             if not os.path.isfile(settings.resume):
                 raise RuntimeError("=> no checkpoint found at '{}'" .format(settings.resume))
             checkpoint = torch.load(settings.resume)
@@ -109,10 +109,10 @@ class Trainer(object):
                 self.summary.visualize_image(self.writer, settings.dataset, image, target, output, global_step)
 
         self.writer.add_scalar('train/total_loss_epoch', train_loss, epoch)
-        print('[Epoch: %d, numImages: %5d]' % (epoch, i * self.args.batch_size + image.data.shape[0]))
+        print('[Epoch: %d, numImages: %5d]' % (epoch, i * settings.batch_size + image.data.shape[0]))
         print('Loss: %.3f' % train_loss)
 
-        if self.args.no_val:
+        if settings.no_val:
             # save checkpoint every epoch
             is_best = False
             self.saver.save_checkpoint({
