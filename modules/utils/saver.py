@@ -52,8 +52,8 @@ class Saver(object):
         p['lr_scheduler'] = settings.lr_scheduler
         p['loss_type'] = settings.loss_type
         p['epoch'] = settings.epochs
-        p['base_size'] = settings.base_size
-        p['crop_size'] = settings.crop_size
+        p['resize_height'] = settings.resize_height
+        p['resize_width'] = settings.resize_width
 
         for key, val in p.items():
             log_file.write(key + ':' + str(val) + '\n')

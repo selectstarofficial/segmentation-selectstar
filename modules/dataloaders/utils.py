@@ -29,7 +29,7 @@ def decode_segmap(label_mask, dataset, plot=False):
         n_classes = 19
         label_colours = get_cityscapes_labels()
     elif dataset == 'surface':
-        n_classes = settings.num_class
+        n_classes = settings.num_classes
         label_colours = get_surface_labels()
     else:
         raise NotImplementedError
@@ -71,7 +71,7 @@ def encode_segmap(mask, dataset):
         n_classes = 19
         label_colours = get_cityscapes_labels()
     elif dataset == 'surface':
-        n_classes = settings.num_class
+        n_classes = settings.num_classes
         label_colours = get_surface_labels()
     else:
         raise NotImplementedError
@@ -119,4 +119,4 @@ def get_pascal_labels():
                        [0, 64, 128]])
 
 def get_surface_labels():
-    return np.array(list(settings.color_to_id.keys()))
+    return np.array(settings.colors)

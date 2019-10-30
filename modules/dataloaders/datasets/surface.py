@@ -11,9 +11,12 @@ from modules.dataloaders.utils import decode_segmap, encode_segmap
 
 """
 base_dir
-├── annotations*
-├── images*
-├── masks*
+├── annotations
+│   ├── *.xml
+├── images
+│   ├── *.jpg
+├── masks
+│   ├── *.png
 ├── train.txt
 ├── valid.txt
 └── color_index.xlsx
@@ -21,7 +24,7 @@ base_dir
 
 
 class SurfaceSegmentation(Dataset):
-    NUM_CLASSES = len(settings.class_names)
+    NUM_CLASSES = settings.num_classes
 
     def __init__(self, base_dir=settings.root_dir, split='train'):
         super().__init__()
@@ -44,17 +47,17 @@ class SurfaceSegmentation(Dataset):
 
         if split == 'train':
             self.composed_transform = transforms.Compose([
+                tr.FixedResize(settings.resize_height, settings.resize_width),
                 tr.RandomHorizontalFlip(),
-                # tr.RandomScaleCrop(base_size=settings.base_size, crop_size=settings.crop_size),
                 # tr.RandomRotate(90),
-                tr.FixedResize(settings.height, settings.width),
+                # tr.RandomScaleCrop(base_size=settings.base_size, crop_size=settings.crop_size),
                 tr.RandomGaussianBlur(),
                 tr.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
                 tr.ToTensor()])
         elif split == 'valid':
             self.composed_transform = transforms.Compose([
                 # tr.FixScaleCrop(crop_size=settings.crop_size),
-                tr.FixedResize(settings.height, settings.width),
+                tr.FixedResize(settings.resize_height, settings.resize_width),
                 tr.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
                 tr.ToTensor()])
         else:
@@ -94,7 +97,7 @@ if __name__ == '__main__':
 
     dataset = SurfaceSegmentation(base_dir=settings.root_dir, split='train')
 
-    dataloader = DataLoader(dataset, batch_size=1, shuffle=True, num_workers=0)
+    dataloader = DataLoader(dataset, batch_size=4, shuffle=True, num_workers=0)
 
     for ii, sample in enumerate(dataloader):
         for jj in range(sample["image"].size()[0]):
