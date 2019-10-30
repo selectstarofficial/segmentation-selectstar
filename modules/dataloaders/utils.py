@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
+import settings
 
 def decode_seg_map_sequence(label_masks, dataset='pascal'):
     rgb_masks = []
@@ -27,6 +28,9 @@ def decode_segmap(label_mask, dataset, plot=False):
     elif dataset == 'cityscapes':
         n_classes = 19
         label_colours = get_cityscapes_labels()
+    elif dataset == 'surface':
+        n_classes = settings.num_class
+        label_colours = get_surface_labels()
     else:
         raise NotImplementedError
 
@@ -48,7 +52,7 @@ def decode_segmap(label_mask, dataset, plot=False):
         return rgb
 
 
-def encode_segmap(mask):
+def encode_segmap(mask, dataset):
     """Encode segmentation label images as pascal classes
     Args:
         mask (np.ndarray): raw segmentation label image of dimension
@@ -57,11 +61,25 @@ def encode_segmap(mask):
         (np.ndarray): class map with dimensions (M,N), where the value at
         a given location is the integer denoting the class index.
     """
-    mask = mask.astype(int)
-    label_mask = np.zeros((mask.shape[0], mask.shape[1]), dtype=np.int16)
-    for ii, label in enumerate(get_pascal_labels()):
+    mask = mask.astype(np.uint8)
+    label_mask = np.zeros((mask.shape[0], mask.shape[1]), dtype=np.uint8)
+
+    if dataset == 'pascal' or dataset == 'coco':
+        n_classes = 21
+        label_colours = get_pascal_labels()
+    elif dataset == 'cityscapes':
+        n_classes = 19
+        label_colours = get_cityscapes_labels()
+    elif dataset == 'surface':
+        n_classes = settings.num_class
+        label_colours = get_surface_labels()
+    else:
+        raise NotImplementedError
+    assert n_classes <= np.iinfo(np.uint8).max, "assert n_classes <= uint8 max"
+
+    for ii, label in enumerate(label_colours):
         label_mask[np.where(np.all(mask == label, axis=-1))[:2]] = ii
-    label_mask = label_mask.astype(int)
+
     return label_mask
 
 
@@ -99,3 +117,6 @@ def get_pascal_labels():
                        [64, 0, 128], [192, 0, 128], [64, 128, 128], [192, 128, 128],
                        [0, 64, 0], [128, 64, 0], [0, 192, 0], [128, 192, 0],
                        [0, 64, 128]])
+
+def get_surface_labels():
+    return np.array(list(settings.color_to_id.keys()))

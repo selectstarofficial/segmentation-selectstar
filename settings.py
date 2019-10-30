@@ -4,8 +4,10 @@ backbone = 'xception'
 out_stride = 16  # network output stride (default: 8)
 use_sbd = False  # whether to use SBD dataset
 workers = 4
-base_size = 513  # base image size
-crop_size = 513  # crop image size
+height = 512
+width = 1024
+base_size = 704  # base image size
+crop_size = 0  # crop image size
 
 cuda = True
 
@@ -52,30 +54,31 @@ else:
     print('Dataset {} not available.'.format(dataset))
     raise NotImplementedError
 
-### BGR -> name ###
+### RGB (Important!) -> name ###
 color_to_class = {}
 color_to_class[(0, 0, 0)] = 'background'
-color_to_class[(255, 0, 0)] = 'sidewalk-block'
+color_to_class[(0, 0, 255)] = 'sidewalk-block'
 color_to_class[(217, 217, 217)] = 'sidewalk-cement'
-color_to_class[(17, 89, 198)] = 'sidewalk-urethane'
+color_to_class[(198, 89, 17)] = 'sidewalk-urethane'
 color_to_class[(128, 128, 128)] = 'sidewalk-asphalt'
-color_to_class[(153, 230, 255)] = 'sidewalk-soil_stone'
-color_to_class[(35, 86, 55)] = 'sidewalk-damaged'
-color_to_class[(70, 168, 110)] = 'sidewalk-other'
-color_to_class[(0, 255, 255)] = 'braille_guilde_block-normal'
-color_to_class[(0, 96, 128)] = 'braille_guilde_block-damaged'
-color_to_class[(255, 170, 230)] = 'alley-normal'
-color_to_class[(255, 88, 208)] = 'alley-crosswalk'
-color_to_class[(200, 60, 138)] = 'alley-speed_bump'
-color_to_class[(128, 38, 88)] = 'alley-damaged'
-color_to_class[(155, 155, 255)] = 'bike_lane-normal'
-color_to_class[(0, 192, 255)] = 'caution_zone-stairs'
-color_to_class[(0, 0, 255)] = 'caution_zone-manhole'
+color_to_class[(255, 230, 153)] = 'sidewalk-soil_stone'
+color_to_class[(55, 86, 35)] = 'sidewalk-damaged'
+color_to_class[(110, 168, 70)] = 'sidewalk-other'
+color_to_class[(255, 255, 0)] = 'braille_guilde_block-normal'
+color_to_class[(128, 96, 0)] = 'braille_guilde_block-damaged'
+color_to_class[(230, 170, 255)] = 'alley-normal'
+color_to_class[(208, 88, 255)] = 'alley-crosswalk'
+color_to_class[(138, 60, 200)] = 'alley-speed_bump'
+color_to_class[(88, 38, 128)] = 'alley-damaged'
+color_to_class[(255, 155, 155)] = 'bike_lane-normal'
+color_to_class[(255, 192, 0)] = 'caution_zone-stairs'
+color_to_class[(255, 0, 0)] = 'caution_zone-manhole'
 color_to_class[(0, 255, 0)] = 'caution_zone-tree_zone'
-color_to_class[(0, 128, 255)] = 'caution_zone-grating'
-color_to_class[(255, 105, 105)] = 'caution_zone-repair_zone'
+color_to_class[(255, 128, 0)] = 'caution_zone-grating'
+color_to_class[(105, 105, 255)] = 'caution_zone-repair_zone'
 
-class_names = color_to_class.values()
+class_names = list(color_to_class.values())
+num_class = len(class_names)
 id_to_class = {i: name for i, name in enumerate(class_names)}
 class_to_id = {value: key for key, value in id_to_class.items()}
 color_to_id = {color: class_to_id[cls] for color, cls in color_to_class.items()}

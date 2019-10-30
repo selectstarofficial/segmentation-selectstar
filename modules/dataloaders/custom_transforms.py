@@ -149,8 +149,8 @@ class FixScaleCrop(object):
                 'label': mask}
 
 class FixedResize(object):
-    def __init__(self, size):
-        self.size = (size, size)  # size: (h, w)
+    def __init__(self, height, width):
+        self.size = (width, height)  # size: (h, w)
 
     def __call__(self, sample):
         img = sample['image']
