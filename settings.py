@@ -54,6 +54,7 @@ else:
 
 ### BGR -> name ###
 color_to_class = {}
+color_to_class[(0, 0, 0)] = 'background'
 color_to_class[(255, 0, 0)] = 'sidewalk-block'
 color_to_class[(217, 217, 217)] = 'sidewalk-cement'
 color_to_class[(17, 89, 198)] = 'sidewalk-urethane'
@@ -74,7 +75,7 @@ color_to_class[(0, 255, 0)] = 'caution_zone-tree_zone'
 color_to_class[(0, 128, 255)] = 'caution_zone-grating'
 color_to_class[(255, 105, 105)] = 'caution_zone-repair_zone'
 
-### id starting from 1 -> name ###
 class_names = color_to_class.values()
-id_to_class = {i + 1: name for i, name in enumerate(class_names)}
+id_to_class = {i: name for i, name in enumerate(class_names)}
 class_to_id = {value: key for key, value in id_to_class.items()}
+color_to_id = {color: class_to_id[cls] for color, cls in color_to_class.items()}
