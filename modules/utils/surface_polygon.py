@@ -14,7 +14,7 @@ XML_GLOB = Path(BASE_DIR) / '**/*.xml'
 OUTPUT_DIR = Path('/home/super/Projects/dataset/surface6')
 JSON_OUTPUT = OUTPUT_DIR / 'annotations'
 IMAGE_OUTPUT = OUTPUT_DIR / 'images'
-MASK_OUTPUT = OUTPUT_DIR / 'mask'
+MASK_OUTPUT = OUTPUT_DIR / 'masks'
 
 # [0, 0, 0] for ignore mask
 color_map = {

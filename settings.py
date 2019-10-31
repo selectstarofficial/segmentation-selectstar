@@ -1,4 +1,4 @@
-"""CUDA_VISIBLE_DEVICES=1,2,3 python3 train.py"""
+"""CUDA_VISIBLE_DEVICES=0,1,2,3 python3 train.py"""
 
 backbone = 'xception'
 out_stride = 8  # network output stride (default: 8)
@@ -49,7 +49,7 @@ elif dataset == 'cityscapes':
 elif dataset == 'coco':
     root_dir = '/home/super/Projects/dataset/coco/'
 elif dataset == 'surface':
-    root_dir = '/home/super/Projects/dataset/surface'
+    root_dir = '/home/super/Projects/dataset/surface6'
 else:
     print('Dataset {} not available.'.format(dataset))
     raise NotImplementedError
@@ -104,4 +104,4 @@ colors = [
     [0, 255, 0],
 ]
 
-num_classes = len(set(colors))
+num_classes = len(colors)

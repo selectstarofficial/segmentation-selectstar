@@ -19,7 +19,7 @@ base_dir
 │   ├── *.png
 ├── train.txt
 ├── valid.txt
-└── color_index.xlsx
+└── labels.xlsx
 """
 
 
