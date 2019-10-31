@@ -25,11 +25,11 @@ test_batch_size = 2 * len(gpu_ids)
 
 loss_type = 'ce'  # 'ce': CrossEntropy, 'focal': Focal Loss
 use_balanced_weights = False  # whether to use balanced weights (default: False)
-lr = 0.01
-lr_scheduler = 'poly'  # lr scheduler mode: ['poly', 'step', 'cos']
-momentum = 0.9
-weight_decay = 5e-4
-nesterov = False
+lr = 1e-3
+# lr_scheduler = 'poly'  # lr scheduler mode: ['poly', 'step', 'cos']
+# momentum = 0.9
+# weight_decay = 5e-4
+# nesterov = False
 
 resume = None  # put the path to resuming file if needed
 checkname = "deeplab"  # set the checkpoint name

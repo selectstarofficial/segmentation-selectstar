@@ -9,7 +9,7 @@ from modules.models.sync_batchnorm.replicate import patch_replication_callback
 from modules.models.deeplab_xception import DeepLabv3_plus, get_1x_lr_params, get_10x_lr_params
 from modules.utils.loss import SegmentationLosses
 from modules.utils.calculate_weights import calculate_weigths_labels
-from modules.utils.lr_scheduler import LR_Scheduler
+# from modules.utils.lr_scheduler import LR_Scheduler
 from modules.utils.saver import Saver
 from modules.utils.summaries import TensorboardSummary
 from modules.utils.metrics import Evaluator
@@ -31,11 +31,12 @@ class Trainer(object):
         model = DeepLabv3_plus(nInputChannels=3, n_classes=self.nclass, os=16, pretrained=settings.pretrained, _print=True)
 
         train_params = [{'params': get_1x_lr_params(model), 'lr': settings.lr},
-                        {'params': get_10x_lr_params(model), 'lr': settings.lr * 10}]
+                        {'params': get_10x_lr_params(model), 'lr': settings.lr}]
 
         # Define Optimizer
-        optimizer = torch.optim.SGD(train_params, momentum=settings.momentum,
-                                    weight_decay=settings.weight_decay, nesterov=settings.nesterov)
+        # optimizer = torch.optim.SGD(train_params, momentum=settings.momentum,
+        #                             weight_decay=settings.weight_decay, nesterov=settings.nesterov)
+        optimizer = torch.optim.Adam(train_params)
 
         # Define Criterion
         # whether to use class balanced weights
@@ -54,8 +55,8 @@ class Trainer(object):
         # Define Evaluator
         self.evaluator = Evaluator(self.nclass)
         # Define lr scheduler
-        self.scheduler = LR_Scheduler(settings.lr_scheduler, settings.lr,
-                                            settings.epochs, len(self.train_loader))
+        # self.scheduler = LR_Scheduler(settings.lr_scheduler, settings.lr,
+        #                                     settings.epochs, len(self.train_loader))
 
         # Using cuda
         if settings.cuda:
@@ -93,7 +94,7 @@ class Trainer(object):
             image, target = sample['image'], sample['label']
             if settings.cuda:
                 image, target = image.cuda(), target.cuda()
-            self.scheduler(self.optimizer, i, epoch, self.best_pred)
+            # self.scheduler(self.optimizer, i, epoch, self.best_pred)
             self.optimizer.zero_grad()
             output = self.model(image)
             loss = self.criterion(output, target)
