@@ -3,6 +3,7 @@ import shutil
 import torch
 from collections import OrderedDict
 import glob
+from shutil import copy2
 import settings
 
 class Saver(object):
@@ -42,19 +43,6 @@ class Saver(object):
                 shutil.copyfile(filename, os.path.join(self.directory, 'model_best.pth.tar'))
 
     def save_experiment_config(self):
-        logfile = os.path.join(self.experiment_dir, 'parameters.txt')
-        log_file = open(logfile, 'w')
-        p = OrderedDict()
-        p['datset'] = settings.dataset
-        p['backbone'] = settings.backbone
-        p['out_stride'] = settings.out_stride
-        p['lr'] = settings.lr
-        p['lr_scheduler'] = settings.lr_scheduler
-        p['loss_type'] = settings.loss_type
-        p['epoch'] = settings.epochs
-        p['resize_height'] = settings.resize_height
-        p['resize_width'] = settings.resize_width
-
-        for key, val in p.items():
-            log_file.write(key + ':' + str(val) + '\n')
-        log_file.close()
+        if not os.path.exists('settings.py'):
+            print("settings.py couldn't be found. save_experiment_config failed.")
+        copy2('settings.py', self.experiment_dir)
