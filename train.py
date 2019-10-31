@@ -28,7 +28,7 @@ class Trainer(object):
         self.train_loader, self.val_loader, self.test_loader, self.nclass = make_data_loader(**kwargs)
 
         # Define network
-        model = DeepLabv3_plus(nInputChannels=3, n_classes=self.nclass, os=16, pretrained=False, _print=True)
+        model = DeepLabv3_plus(nInputChannels=3, n_classes=self.nclass, os=16, pretrained=settings.pretrained, _print=True)
 
         train_params = [{'params': get_1x_lr_params(model), 'lr': settings.lr},
                         {'params': get_10x_lr_params(model), 'lr': settings.lr * 10}]
