@@ -53,30 +53,65 @@ else:
     print('Dataset {} not available.'.format(dataset))
     raise NotImplementedError
 
+"""
+background	    0
+bike_lane	    1
+caution_zone	2
+crosswalk	    3
+guide_block	    4
+roadway	        5
+sidewalk	    6
+"""
+"""
+Class	Attr	Unique	Label	R	G	B
+background		background	0	0	0	0
+sidewalk	block	sidewalk	6	0	0	255
+sidewalk	cement	sidewalk	6	217	217	217
+sidewalk	urethane	bike_lane	1	198	89	17
+sidewalk	asphalt	background	0	128	128	128
+sidewalk	soil_stone	sidewalk	6	255	230	153
+sidewalk	damaged	sidewalk	6	55	86	35
+sidewalk	other	sidewalk	6	110	168	70
+braille_guilde_block	normal	guide_block	4	255	255	0
+braille_guilde_block	damaged	guide_block	4	128	96	0
+roadway	normal	roadway	5	255	128	255
+roadway	crosswalk	crosswalk	3	255	0	255
+alley	normal	roadway	5	230	170	255
+alley	crosswalk	crosswalk	3	208	88	255
+alley	speed_bump	roadway	5	138	60	200
+alley	damaged	roadway	5	88	38	128
+bike_lane		bike_lane	1	255	155	155
+caution_zone	stairs	caution_zone	2	255	192	0
+caution_zone	manhole	caution_zone	2	255	0	0
+caution_zone	tree_zone	caution_zone	2	0	255	0
+caution_zone	grating	caution_zone	2	255	128	0
+caution_zone	repair_zone	caution_zone	2	105	105	255
+
+"""
 
 classes = [
-"background",
-"sidewalk@block",
-"sidewalk@cement",
-"sidewalk@urethane",
-"sidewalk@asphalt",
-"sidewalk@soil_stone",
-"sidewalk@damaged",
-"sidewalk@other",
-"braille_guilde_block@normal",
-"braille_guilde_block@damaged",
-"roadway@normal",
-"roadway@crosswalk",
-"alley@normal",
-"alley@crosswalk",
-"alley@speed_bump",
-"alley@damaged",
-"bike_lane@normal",
-"caution_zone@stairs",
-"caution_zone@manhole",
-"caution_zone@tree_zone",
-"caution_zone@grating",
-"caution_zone@repair_zone",
+    0,
+    6,
+    6,
+    1,
+    0,
+    6,
+    6,
+    6,
+    4,
+    4,
+    5,
+    3,
+    5,
+    3,
+    5,
+    5,
+    1,
+    2,
+    2,
+    2,
+    2,
+    2
 ]
 
 # RGB
