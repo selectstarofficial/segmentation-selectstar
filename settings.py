@@ -104,4 +104,4 @@ colors = [
     [0, 255, 0],
 ]
 
-num_classes = len(colors)
+num_classes = len(colors)  # 7
