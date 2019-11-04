@@ -12,6 +12,7 @@ import numpy as np
 from PIL import Image
 from tqdm import tqdm
 
+### RUN OPTIONS ###
 MODEL_PATH = "./run/surface/deeplab/model_iou_77.pth.tar"
 ORIGINAL_HEIGHT = 720
 ORIGINAL_WIDTH = 1280
@@ -22,9 +23,9 @@ CUDA = True if torch.cuda.is_available() else False
 
 MODE = 'mp4'  # 'mp4' or 'jpg'
 assert MODE in ['mp4', 'jpg']
-DATA_PATH = ''  # .mp4 path or folder including *.jpg
+DATA_PATH = './input/test.mp4'  # .mp4 path or folder including *.jpg
 OUTPUT_PATH = './output/output.mp4'  # where mp4 file or jpg frames folder should be saved.
-
+######
 
 class FrameGeneratorMP4:
     def __init__(self, mp4_file: str, output_path=None, show=True):
@@ -168,6 +169,7 @@ def main():
 
     generator.close()
     print('Done.')
+
 
 if __name__ == '__main__':
     main()
