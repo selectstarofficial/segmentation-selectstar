@@ -173,7 +173,8 @@ def main():
 
     for index, img in enumerate(tqdm(generator)):
         segmap = model_wrapper.predict(img)
-        generator.write(segmap)
+        result = (img * 0.5 + segmap * 0.5).astype(np.uint8)
+        generator.write(result)
 
     generator.close()
     print('Done.')
