@@ -8,6 +8,7 @@ import os.path as osp
 from torchvision import transforms
 from modules.dataloaders.utils import decode_segmap
 from modules.models.deeplab_xception import DeepLabv3_plus
+from modules.models.sync_batchnorm.replicate import patch_replication_callback
 import numpy as np
 from PIL import Image
 from tqdm import tqdm
@@ -22,16 +23,18 @@ NUM_CLASSES = 7  # including background
 CUDA = True if torch.cuda.is_available() else False
 
 MODE = 'mp4'  # 'mp4' or 'jpg'
-assert MODE in ['mp4', 'jpg']
+assert MODE in ['mp4', 'jpg'], "MODE should be 'mp4' or 'jpg'."
 DATA_PATH = './input/test.mp4'  # .mp4 path or folder including *.jpg
 OUTPUT_PATH = './output/output.mp4'  # where mp4 file or jpg frames folder should be saved.
+SHOW_OUTPUT = False
 ######
+
 
 class FrameGeneratorMP4:
     def __init__(self, mp4_file: str, output_path=None, show=True):
         assert osp.isfile(mp4_file), "DATA_PATH should be existing mp4 file path."
         self.vidcap = cv2.VideoCapture(mp4_file)
-        self.fps = self.vidcap.get(cv2.CAP_PROP_FPS)
+        self.fps = int(self.vidcap.get(cv2.CAP_PROP_FPS))
         self.total = int(self.vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
         self.show = show
         self.output_path = output_path
@@ -39,7 +42,7 @@ class FrameGeneratorMP4:
         if self.output_path is not None:
             os.makedirs(osp.dirname(output_path), exist_ok=True)
             self.fourcc = cv2.VideoWriter_fourcc(*'DIVX')
-            self.out = cv2.VideoWriter(OUTPUT_PATH, self.fps, (ORIGINAL_HEIGHT, ORIGINAL_WIDTH))
+            self.out = cv2.VideoWriter(OUTPUT_PATH, self.fourcc, self.fps, (ORIGINAL_WIDTH, ORIGINAL_HEIGHT))
 
     def __iter__(self):
         success, image = self.vidcap.read()
@@ -115,8 +118,8 @@ class ModelWrapper:
     def __init__(self):
         self.composed_transform = transforms.Compose([
             transforms.Resize((MODEL_HEIGHT, MODEL_WIDTH), interpolation=Image.BILINEAR),
-            transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-            transforms.ToTensor()])
+            transforms.ToTensor(),
+            transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))])
 
         self.model = self.load_model(MODEL_PATH)
 
@@ -124,6 +127,8 @@ class ModelWrapper:
     def load_model(model_path):
         model = DeepLabv3_plus(nInputChannels=3, n_classes=NUM_CLASSES, os=16)
         if CUDA:
+            model = torch.nn.DataParallel(model, device_ids=[0])
+            patch_replication_callback(model)
             model = model.cuda()
         if not osp.isfile(MODEL_PATH):
             raise RuntimeError("=> no checkpoint found at '{}'".format(model_path))
@@ -137,15 +142,18 @@ class ModelWrapper:
         model.eval()
         return model
 
-    def predict(self, rgb_img):
-        img = self.composed_transform(Image.fromarray(rgb_img))
+    def predict(self, rgb_img: np.array):
+        x = self.composed_transform(Image.fromarray(rgb_img))
+        x = x.unsqueeze(0)
+
         if CUDA:
-            img = img.cuda()
+            x = x.cuda()
         with torch.no_grad():
-            output = self.model(img)
+            output = self.model(x)
         pred = output.data.detach().cpu().numpy()
-        pred = np.argmax(pred, axis=1)
+        pred = np.argmax(pred, axis=1).squeeze(0)
         segmap = decode_segmap(pred, dataset='surface')
+        segmap = np.array(segmap * 255).astype(np.uint8)
 
         resized = cv2.resize(segmap, (ORIGINAL_WIDTH, ORIGINAL_HEIGHT),
                              interpolation=cv2.INTER_NEAREST)
@@ -157,9 +165,9 @@ def main():
     model_wrapper = ModelWrapper()
 
     if MODE == 'mp4':
-        generator = FrameGeneratorMP4(DATA_PATH, OUTPUT_PATH, show=True)
+        generator = FrameGeneratorMP4(DATA_PATH, OUTPUT_PATH, show=SHOW_OUTPUT)
     elif MODE == 'jpg':
-        generator = FrameGeneratorJpg(DATA_PATH, OUTPUT_PATH, show=True)
+        generator = FrameGeneratorJpg(DATA_PATH, OUTPUT_PATH, show=SHOW_OUTPUT)
     else:
         raise NotImplementedError('MODE should be "mp4" or "jpg".')
 
