@@ -27,6 +27,9 @@ assert MODE in ['mp4', 'jpg'], "MODE should be 'mp4' or 'jpg'."
 DATA_PATH = './input/test.mp4'  # .mp4 path or folder including *.jpg
 OUTPUT_PATH = './output/output.mp4'  # where mp4 file or jpg frames folder should be saved.
 SHOW_OUTPUT = False
+
+OVERLAPPING = True
+FPS_OVERRIDE = 60
 ######
 
 
@@ -42,6 +45,9 @@ class FrameGeneratorMP4:
         if self.output_path is not None:
             os.makedirs(osp.dirname(output_path), exist_ok=True)
             self.fourcc = cv2.VideoWriter_fourcc(*'DIVX')
+
+            if FPS_OVERRIDE is not None:
+                self.fps = int(FPS_OVERRIDE)
             self.out = cv2.VideoWriter(OUTPUT_PATH, self.fourcc, self.fps, (ORIGINAL_WIDTH, ORIGINAL_HEIGHT))
 
     def __iter__(self):
@@ -173,7 +179,10 @@ def main():
 
     for index, img in enumerate(tqdm(generator)):
         segmap = model_wrapper.predict(img)
-        result = (img * 0.5 + segmap * 0.5).astype(np.uint8)
+        if OVERLAPPING:
+            result = (img * 0.5 + segmap * 0.5).astype(np.uint8)
+        else:
+            result = segmap
         generator.write(result)
 
     generator.close()
