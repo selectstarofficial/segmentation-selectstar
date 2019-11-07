@@ -23,13 +23,24 @@ NUM_CLASSES = 7  # including background
 CUDA = True if torch.cuda.is_available() else False
 
 MODE = 'mp4'  # 'mp4' or 'jpg'
-assert MODE in ['mp4', 'jpg'], "MODE should be 'mp4' or 'jpg'."
 DATA_PATH = './input/test.mp4'  # .mp4 path or folder including *.jpg
 OUTPUT_PATH = './output/output.mp4'  # where mp4 file or jpg frames folder should be saved.
-SHOW_OUTPUT = False
+SHOW_OUTPUT = False  # whether to cv2.show()
 
-OVERLAPPING = True
-FPS_OVERRIDE = 60
+OVERLAPPING = True  # whether to mix segmentation map and original image
+FPS_OVERRIDE = 60  # None to use original video fps
+
+CUSTOM_COLOR_MAP = [
+    [0, 0, 0],  # background
+    [0, 0, 0],  # bike_lane
+    [0, 0, 0],  # caution_zone
+    [255, 0, 255],  # crosswalk
+    [255, 255, 0],  # guide_block
+    [0, 0, 255],  # roadway
+    [0, 255, 0],  # sidewalk
+]  # To ignore unused classes while predicting
+
+CUSTOM_N_CLASSES = len(CUSTOM_COLOR_MAP)
 ######
 
 
@@ -158,7 +169,7 @@ class ModelWrapper:
             output = self.model(x)
         pred = output.data.detach().cpu().numpy()
         pred = np.argmax(pred, axis=1).squeeze(0)
-        segmap = decode_segmap(pred, dataset='surface')
+        segmap = decode_segmap(pred, dataset='custom', label_colors=CUSTOM_COLOR_MAP, n_classes=CUSTOM_N_CLASSES)
         segmap = np.array(segmap * 255).astype(np.uint8)
 
         resized = cv2.resize(segmap, (ORIGINAL_WIDTH, ORIGINAL_HEIGHT),

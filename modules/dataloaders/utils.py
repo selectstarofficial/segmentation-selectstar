@@ -12,25 +12,30 @@ def decode_seg_map_sequence(label_masks, dataset='pascal'):
     return rgb_masks
 
 
-def decode_segmap(label_mask, dataset, plot=False):
+def decode_segmap(label_mask, dataset, plot=False, **kwargs):
     """Decode segmentation class labels into a color image
     Args:
         label_mask (np.ndarray): an (M,N) array of integer values denoting
           the class label at each spatial location.
         plot (bool, optional): whether to show the resulting color image
           in a figure.
+        kwargs (dict, optional): if dataset == 'custom', then uses kwargs['n_classes'], kwargs['label_colors'].
     Returns:
         (np.ndarray, optional): the resulting decoded color image.
     """
     if dataset == 'pascal' or dataset == 'coco':
         n_classes = 21
-        label_colours = get_pascal_labels()
+        label_colors = get_pascal_labels()
     elif dataset == 'cityscapes':
         n_classes = 19
-        label_colours = get_cityscapes_labels()
+        label_colors = get_cityscapes_labels()
     elif dataset == 'surface':
         n_classes = settings.num_classes
-        label_colours = get_surface_labels()
+        label_colors = get_surface_labels()
+    elif dataset == 'custom':
+        assert 'n_classes' in kwargs and 'label_colors' in kwargs, "Please specify custom color map and n_classes."
+        n_classes = int(kwargs['n_classes'])
+        label_colors = np.asarray(kwargs['label_colors'])
     else:
         raise NotImplementedError
 
@@ -38,9 +43,9 @@ def decode_segmap(label_mask, dataset, plot=False):
     g = label_mask.copy()
     b = label_mask.copy()
     for ll in range(0, n_classes):
-        r[label_mask == ll] = label_colours[ll, 0]
-        g[label_mask == ll] = label_colours[ll, 1]
-        b[label_mask == ll] = label_colours[ll, 2]
+        r[label_mask == ll] = label_colors[ll, 0]
+        g[label_mask == ll] = label_colors[ll, 1]
+        b[label_mask == ll] = label_colors[ll, 2]
     rgb = np.zeros((label_mask.shape[0], label_mask.shape[1], 3), dtype=np.float32)
     rgb[:, :, 0] = r / 255.0
     rgb[:, :, 1] = g / 255.0
@@ -66,18 +71,18 @@ def encode_segmap(mask, dataset):
 
     if dataset == 'pascal' or dataset == 'coco':
         n_classes = 21
-        label_colours = get_pascal_labels()
+        label_colors = get_pascal_labels()
     elif dataset == 'cityscapes':
         n_classes = 19
-        label_colours = get_cityscapes_labels()
+        label_colors = get_cityscapes_labels()
     elif dataset == 'surface':
         n_classes = settings.num_classes
-        label_colours = get_surface_labels()
+        label_colors = get_surface_labels()
     else:
         raise NotImplementedError
     assert n_classes <= np.iinfo(np.uint8).max, "assert n_classes <= uint8 max"
 
-    for ii, label in enumerate(label_colours):
+    for ii, label in enumerate(label_colors):
         label_mask[np.where(np.all(mask == label, axis=-1))[:2]] = ii
 
     return label_mask
