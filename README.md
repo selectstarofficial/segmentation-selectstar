@@ -1,6 +1,6 @@
 # segmentation-selectstar
 
-![](https://media.giphy.com/media/ekMiYc6GA7ZOdKFBAp/giphy.gif)
+![](https://media.giphy.com/media/S7KnEAj0ZYpXeDLLuJ/giphy.gif)
 
 Original repository: https://github.com/jfzhang95/pytorch-deeplab-xception
 
