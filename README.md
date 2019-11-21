@@ -1,5 +1,7 @@
 # segmentation-selectstar
 
+![](https://media.giphy.com/media/ekMiYc6GA7ZOdKFBAp/giphy.gif)
+
 Original repository: https://github.com/jfzhang95/pytorch-deeplab-xception
 
 Modified to run NIA SurfaceMasking dataset by yoongi@selectstar.ai
