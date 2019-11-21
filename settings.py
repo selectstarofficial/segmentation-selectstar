@@ -2,7 +2,6 @@
 
 backbone = 'xception'
 out_stride = 8  # network output stride (default: 8)
-use_sbd = False  # whether to use SBD dataset
 workers = 16
 pretrained = True  # whether to use pretrained Xception backbone
 
@@ -26,12 +25,14 @@ test_batch_size = 2 * len(gpu_ids)
 loss_type = 'ce'  # 'ce': CrossEntropy, 'focal': Focal Loss
 use_balanced_weights = False  # whether to use balanced weights (default: False)
 lr = 1e-3
+
+# Adam optimizer performed far better.
 # lr_scheduler = 'poly'  # lr scheduler mode: ['poly', 'step', 'cos']
 # momentum = 0.9
 # weight_decay = 5e-4
 # nesterov = False
 
-resume = None  # put the path to resuming file if needed
+resume = None  # put the path to resuming file if needed '~.pth.tar'
 checkname = "deeplab"  # set the checkpoint name
 
 ft = False  # finetuning on a different dataset
@@ -41,6 +42,7 @@ no_val = False  # skip validation during training
 dataset = 'surface'
 root_dir = ''
 if dataset == 'pascal':
+    use_sbd = False  # whether to use SBD dataset
     root_dir = '/path/to/datasets/VOCdevkit/VOC2012/'  # folder that contains VOCdevkit/.
 elif dataset == 'sbd':
     root_dir = '/path/to/datasets/benchmark_RELEASE/'  # folder that contains dataset/.
@@ -89,7 +91,8 @@ caution_zone	        grating	    caution_zone	2	    255	128	0
 caution_zone	        repair_zone	caution_zone	2	    105	105	255
 
 See more info at
-modules/utils/surface_polygon.py
+modules/utils/surface_dataset_tools/surface_polygon.py
+modules/utils/surface_dataset_tools/split_dataset.py
 modules/dataloaders/datasets/surface.py
 """
 

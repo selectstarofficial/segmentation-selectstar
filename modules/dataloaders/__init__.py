@@ -9,6 +9,7 @@ def make_data_loader(**kwargs):
         train_set = pascal.VOCSegmentation(settings, split='train')
         val_set = pascal.VOCSegmentation(settings, split='val')
         if settings.use_sbd:
+            from modules.dataloaders.datasets import sbd, combine_dbs
             sbd_train = sbd.SBDSegmentation(settings, split=['train', 'val'])
             train_set = combine_dbs.CombineDBs([train_set, sbd_train], excluded=[val_set])
 

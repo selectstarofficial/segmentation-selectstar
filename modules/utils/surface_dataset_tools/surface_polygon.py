@@ -9,6 +9,38 @@ import numpy as np
 from shutil import copy2
 from PIL import Image
 
+"""
+Input Dataset Structure
+
+BASE_DIR
+├── SM0915_13
+│   ├── 27_SM0915_13.xml
+│   ├── MP_SEL_SUR_001441.jpg
+│   ├── MP_SEL_SUR_001442.jpg
+│   ├── MP_SEL_SUR_001443.jpg
+│   ├── ...
+├── SM0915_14
+│   ├── 28_SM0915_14.xml
+│   ├── MP_SEL_SUR_001562.jpg
+│   ├── MP_SEL_SUR_001563.jpg
+│   ├── MP_SEL_SUR_001564.jpg
+│   ├── ...
+├── ...
+└── color_index.xlsx
+
+Output Dataset Structure
+
+OUTPUT_DIR
+├── annotations
+│   ├── *.xml
+├── images
+│   ├── *.jpg
+├── masks
+│   ├── *.png
+└── color_index.xlsx
+"""
+
+### RUN OPTIONS ###
 BASE_DIR = Path('/home/super/Projects/dataset/surface_org')
 XML_GLOB = Path(BASE_DIR) / '**/*.xml'
 OUTPUT_DIR = Path('/home/super/Projects/dataset/surface6')
@@ -40,6 +72,7 @@ color_map = {
 "caution_zone@grating": [255, 0, 0],  # caution_zone
 "caution_zone@repair_zone": [255, 0, 0],  # caution_zone
 }
+###################
 
 error_logs = []
 image2path = {}
