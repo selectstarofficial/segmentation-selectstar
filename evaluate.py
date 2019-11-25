@@ -14,7 +14,8 @@ from modules.utils.metrics import Evaluator
 """
 Running this program requires settings.py options below
 
-settings.resume = 'PathToCheckpointModel.pth.tar'
+settings.resume = True
+settings.checkpoint = 'PathToCheckpointModel.pth.tar'
 settings.dataset = 'surface'
 settings.root_dir = '/path/to/surface6'
 settings.num_classes
@@ -64,22 +65,22 @@ class Trainer(object):
 
         # Resuming checkpoint
         self.best_pred = 0.0
-        if settings.resume is not None:
-            if not os.path.isfile(settings.resume):
-                raise RuntimeError("=> no checkpoint found at '{}'".format(settings.resume))
-            checkpoint = torch.load(settings.resume)
-            settings.start_epoch = checkpoint['epoch']
-            if settings.cuda:
-                self.model.module.load_state_dict(checkpoint['state_dict'])
-            else:
-                self.model.load_state_dict(checkpoint['state_dict'])
-            # if not settings.ft:
-            #     self.optimizer.load_state_dict(checkpoint['optimizer'])
-            self.best_pred = checkpoint['best_pred']
-            print("=> loaded checkpoint '{}' (epoch {})"
-                  .format(settings.resume, checkpoint['epoch']))
+        if settings.resume is False:
+            print("settings.resume is False but ignoring...")
+        if not os.path.isfile(settings.checkpoint):
+            raise RuntimeError("=> no checkpoint found at '{}'.\
+            Please designate pretrained weights file to settings.checkpoint='~.pth.tar'.".format(settings.checkpoint))
+        checkpoint = torch.load(settings.checkpoint)
+        settings.start_epoch = checkpoint['epoch']
+        if settings.cuda:
+            self.model.module.load_state_dict(checkpoint['state_dict'])
         else:
-            raise FileNotFoundError("Please designate pretrained weights file to settings.resume='~.pth.tar'.")
+            self.model.load_state_dict(checkpoint['state_dict'])
+        # if not settings.ft:
+        #     self.optimizer.load_state_dict(checkpoint['optimizer'])
+        self.best_pred = checkpoint['best_pred']
+        print("=> loaded checkpoint '{}' (epoch {})"
+              .format(settings.checkpoint, checkpoint['epoch']))
 
     def validation(self):
         self.model.eval()

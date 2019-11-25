@@ -66,10 +66,10 @@ class Trainer(object):
 
         # Resuming checkpoint
         self.best_pred = 0.0
-        if settings.resume is not None:
-            if not os.path.isfile(settings.resume):
-                raise RuntimeError("=> no checkpoint found at '{}'" .format(settings.resume))
-            checkpoint = torch.load(settings.resume)
+        if settings.resume:
+            if not os.path.isfile(settings.checkpoint):
+                raise RuntimeError("=> no checkpoint found at '{}'" .format(settings.checkpoint))
+            checkpoint = torch.load(settings.checkpoint)
             settings.start_epoch = checkpoint['epoch']
             if settings.cuda:
                 self.model.module.load_state_dict(checkpoint['state_dict'])
@@ -79,7 +79,7 @@ class Trainer(object):
                 self.optimizer.load_state_dict(checkpoint['optimizer'])
             self.best_pred = checkpoint['best_pred']
             print("=> loaded checkpoint '{}' (epoch {})"
-                  .format(settings.resume, checkpoint['epoch']))
+                  .format(settings.checkpoint, checkpoint['epoch']))
 
         # Clear start epoch if fine-tuning
         if settings.ft:

@@ -32,7 +32,9 @@ lr = 1e-3
 # weight_decay = 5e-4
 # nesterov = False
 
-resume = None  # put the path to resuming file if needed '~.pth.tar'
+resume = False  # True: load checkpoint model. False: train from scratch
+checkpoint = './run/surface/deeplab/model_iou_77.pth.tar'
+
 checkname = "deeplab"  # set the checkpoint name
 
 ft = False  # finetuning on a different dataset
