@@ -54,3 +54,25 @@ Modified to run NIA SurfaceMasking dataset by yoongi@selectstar.ai
     ```
 3. Run ```predict.py```
 4. Output result will be saved to OUTPUT_PATH
+
+
+# Evaluate
+1. Prepare dataset and trained model file.
+2. Check settings.py options.
+3. Run evaluate.py
+
+### Performance
+    ```
+    [Validation]
+    numImages:  2000
+    Acc:0.9145832071304322, Acc_class:0.8474374571156529, mIoU:0.7729268004366087, fwIoU: 0.8433756131890291
+    Loss: 17.542
+    IoU of each class
+    background: 0.8540012294525428
+    bike_lane: 0.6477503591641897
+    caution_zone: 0.5718921926153789
+    crosswalk: 0.8020526751599193
+    guide_block: 0.8133515872417134
+    roadway: 0.856940048889669
+    sidewalk: 0.8644995105328486
+    ```

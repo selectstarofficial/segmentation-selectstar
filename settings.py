@@ -5,7 +5,7 @@ out_stride = 8  # network output stride (default: 8)
 workers = 16
 pretrained = True  # whether to use pretrained Xception backbone
 
-resize_height = 512
+resize_height = 512  # model input shape
 resize_width = 1024
 
 cuda = True
