@@ -28,6 +28,7 @@ settings.use_balanced_weights
 settings.cuda
 settings.loss_type
 settings.gpu_ids
+settings.labels
 """
 
 
@@ -111,7 +112,11 @@ class Trainer(object):
         print('numImages: %5d' % (i * settings.batch_size + image.data.shape[0]))
         print("Acc:{}, Acc_class:{}, mIoU:{}, fwIoU: {}".format(Acc, Acc_class, mIoU, FWIoU))
         print('Loss: %.3f' % test_loss)
+        ClassIoU = self.evaluator.Intersection_over_Union()
 
+        print('IoU of each class')
+        for index, label in settings.labels:
+            print('{}: {}'.format(label, ClassIoU[index]))
 
 if __name__ == "__main__":
     trainer = Trainer()

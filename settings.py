@@ -97,7 +97,15 @@ modules/utils/surface_dataset_tools/surface_polygon.py
 modules/utils/surface_dataset_tools/split_dataset.py
 modules/dataloaders/datasets/surface.py
 """
-
+labels = [
+    'background',
+    'bike_lane',
+    'caution_zone',
+    'crosswalk',
+    'guide_block',
+    'roadway',
+    'sidewalk',
+]
 # RGB
 colors = [
     [0, 0, 0],
