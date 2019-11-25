@@ -115,7 +115,7 @@ class Trainer(object):
         ClassIoU = self.evaluator.Intersection_over_Union()
 
         print('IoU of each class')
-        for index, label in settings.labels:
+        for index, label in enumerate(settings.labels):
             print('{}: {}'.format(label, ClassIoU[index]))
 
 if __name__ == "__main__":
