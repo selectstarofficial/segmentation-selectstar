@@ -32,8 +32,8 @@ FPS_OVERRIDE = 60  # None to use original video fps
 
 CUSTOM_COLOR_MAP = [
     [0, 0, 0],  # background
-    [0, 0, 0],  # bike_lane
-    [0, 0, 0],  # caution_zone
+    [255, 128, 0],  # bike_lane
+    [255, 0, 0],  # caution_zone
     [255, 0, 255],  # crosswalk
     [255, 255, 0],  # guide_block
     [0, 0, 255],  # roadway
