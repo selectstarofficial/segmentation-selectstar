@@ -5,6 +5,7 @@ import torch
 from glob import glob
 import os
 import os.path as osp
+from pathlib import Path
 from torchvision import transforms
 from modules.dataloaders.utils import decode_segmap
 from modules.models.deeplab_xception import DeepLabv3_plus
@@ -22,9 +23,14 @@ MODEL_WIDTH = 1024
 NUM_CLASSES = 7  # including background
 CUDA = True if torch.cuda.is_available() else False
 
-MODE = 'mp4'  # 'mp4' or 'jpg'
-DATA_PATH = './input/test.mp4'  # .mp4 path or folder including *.jpg
-OUTPUT_PATH = './output/output.avi'  # where video file or jpg frames folder should be saved.
+MODE = 'jpg'  # 'mp4' or 'jpg'
+DATA_PATH = './test/jpgs'  # .mp4 path or folder containing jpg images
+OUTPUT_PATH = './output/jpgs'  # where video file or jpg frames folder should be saved.
+
+# MODE = 'mp4'
+# DATA_PATH = './test/test.mp4'
+# OUTPUT_PATH = './output/test.avi'
+
 SHOW_OUTPUT = True if 'DISPLAY' in os.environ else False  # whether to cv2.show()
 
 OVERLAPPING = True  # whether to mix segmentation map and original image
@@ -99,15 +105,16 @@ class FrameGeneratorJpg:
         self.files = sorted(glob(osp.join(jpg_folder, '*.jpg'), recursive=False))
         self.show = show
         self.output_folder = output_folder
+        self.last_file_name = ""
 
         if self.output_folder is not None:
             os.makedirs(output_folder, exist_ok=True)
-            self.counter = 0
 
     def __iter__(self):
         for file in self.files:
             img = cv2.imread(file, cv2.IMREAD_COLOR)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            self.last_file_name = str(Path(file).name)
             yield np.array(img)
 
     def __len__(self):
@@ -124,7 +131,7 @@ class FrameGeneratorJpg:
                 exit(1)
 
         if self.output_folder is not None:
-            path = osp.join(self.output_folder, f'{str(self.counter).zfill(8)}.jpg')
+            path = osp.join(self.output_folder, f'{self.last_file_name}')
             cv2.imwrite(path, bgr)
 
     def close(self):
@@ -191,7 +198,9 @@ def main():
     for index, img in enumerate(tqdm(generator)):
         segmap = model_wrapper.predict(img)
         if OVERLAPPING:
-            result = (img * 0.5 + segmap * 0.5).astype(np.uint8)
+            h, w, _ = np.array(segmap).shape
+            img_resized = cv2.resize(img, (w, h))
+            result = (img_resized * 0.5 + segmap * 0.5).astype(np.uint8)
         else:
             result = segmap
         generator.write(result)

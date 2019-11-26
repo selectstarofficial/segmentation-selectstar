@@ -2,6 +2,11 @@
 
 ![](https://media.giphy.com/media/S7KnEAj0ZYpXeDLLuJ/giphy.gif)
 
+Samples | -
+--- | ---
+![](docs/imgs/MP_SEL_SUR_001453_out.jpg) | ![](docs/imgs/MP_SEL_SUR_001456_out.jpg)
+![](docs/imgs/MP_SEL_SUR_001503_out.jpg) | ![](docs/imgs/MP_SEL_SUR_001563_out.jpg)
+
 Original repository: https://github.com/jfzhang95/pytorch-deeplab-xception
 
 Modified to run NIA SurfaceMasking dataset by yoongi@selectstar.ai
@@ -59,7 +64,13 @@ Separates **sidewalk** and **driveway** areas using **Semantic Segmentation**.
 
 
 2. **Generate mask images by running:**
-```modules/utils/surface_dataset_tools/surface_polygon.py```, ```modules/utils/surface_dataset_tools/split_dataset.py```
+    1. ```modules/utils/surface_dataset_tools/surface_polygon.py```
+    2. ```modules/utils/surface_dataset_tools/split_dataset.py```
+    
+    image | mask
+    --- | ---
+    ![](docs/imgs/MP_SEL_SUR_001457.jpg)|![](docs/imgs/MP_SEL_SUR_001457.png)
+    
 3. **Dataset structure should be like this.**
     ```
     surface6
