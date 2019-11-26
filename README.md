@@ -2,7 +2,13 @@
 
 ![](https://media.giphy.com/media/S7KnEAj0ZYpXeDLLuJ/giphy.gif)
 
-Samples | -
+# Introduction
+
+This is a prototype model of **Pedestrian zone detection for blind people**.
+
+Separates **sidewalk** and **driveway** areas using **Semantic Segmentation**.
+
+Sample Results | -
 --- | ---
 ![](docs/imgs/MP_SEL_SUR_001453_out.jpg) | ![](docs/imgs/MP_SEL_SUR_001456_out.jpg)
 ![](docs/imgs/MP_SEL_SUR_001503_out.jpg) | ![](docs/imgs/MP_SEL_SUR_001563_out.jpg)
@@ -10,12 +16,6 @@ Samples | -
 Original repository: https://github.com/jfzhang95/pytorch-deeplab-xception
 
 Modified to run NIA SurfaceMasking dataset by yoongi@selectstar.ai
-
-# Introduction
-
-This is a prototype model of **Pedestrian zone detection for blind people**.
-
-Separates **sidewalk** and **driveway** areas using **Semantic Segmentation**.
 
 
 # Model
