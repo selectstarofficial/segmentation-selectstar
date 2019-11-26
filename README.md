@@ -117,6 +117,8 @@ Modified to run NIA SurfaceMasking dataset by yoongi@selectstar.ai
 # Download Trained Weights
 [Model Weights](https://drive.google.com/file/d/1Y8RhV3hWEoE4mqbriGbAyMDQMIaQdrnb/view?usp=sharing)
 
+Download and put it into ```./run/surface/deeplab/model_iou_77.pth.tar```
+
 [Settings for Reproduction](https://drive.google.com/drive/folders/16Pu_N7TOJN6NA9d92ohREWsVy9cWRH1i?usp=sharing)
 
 ![](docs/imgs/logs.png)
