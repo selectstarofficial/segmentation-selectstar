@@ -6,10 +6,59 @@ Original repository: https://github.com/jfzhang95/pytorch-deeplab-xception
 
 Modified to run NIA SurfaceMasking dataset by yoongi@selectstar.ai
 
+# Introduction
+
+This is a prototype model of **Pedestrian zone detection for blind people**.
+
+Separates **sidewalk** and **driveway** areas using **Semantic Segmentation**.
+
+
 # Training Surface Masking Dataset
 
 1. Download NIA Surface Masking dataset from AIhub. (Not yet tested)
-2. Generate mask images by running ```modules/utils/surface_dataset_tools/surface_polygon.py```, ```modules/utils/surface_dataset_tools/split_dataset.py```
+
+The Original NIA Surface Masking dataset consists of the following classes:
+
+class@attribute | Meaning
+--- | ---
+alley@crosswalk|이면도로 - 횡단보도
+alley@damaged|이면도로 -파손
+alley@normal|이면도로 - 속성값 없음
+alley@speed_bump|이면도로 - 과속방지턱
+bike_lane|자전거도로
+braille_guide_blocks@damaged|점자블록 -파손
+braille_guide_blocks@normal|점자블록 -속성값 없음
+caution_zone@grating|주의구역 - 그레이팅
+caution_zone@manhole|주의구역 - 맨홀
+caution_zone@repair_zone|주의구역 - 보수구역
+caution_zone@stairs|주의구역 - 계단
+caution_zone@tree_zone|주의구역 - 가로수영역
+roadway@crosswalk|차도 - 횡단보도
+roadway@normal|차도 - 속성값없음
+sidewalk@asphalt|인도 - 아스팔트
+sidewalk@blocks|인도 - 보도블럭
+sidewalk@cement|인도 - 시멘트
+sidewalk@damaged|인도 - 파손
+sidewalk@other|인도 - 기타
+sidewalk@soil_stone|인도 - 흙,돌,비포장
+sidewalk@urethane|인도 - 우레탄
+
+**But there are too many classes to do segmentation, so I reduced into 6 classes:**
+
+New Class | Label | RGB Color
+--- | --- | ---
+background|0|[0, 0, 0]
+bike_lane|1|[255, 128, 0]
+caution_zone|2|[255, 0, 0]
+crosswalk|3|[255, 0, 255]
+guide_block|4|[255, 255, 0]
+roadway|5|[0, 0, 255]
+sidewalk|6|[0, 255, 0]
+
+**Check ```settings.py``` for detailed classes info.**
+
+
+2. Generate mask images **for reduced classes** by running ```modules/utils/surface_dataset_tools/surface_polygon.py```, ```modules/utils/surface_dataset_tools/split_dataset.py```
 3. Dataset structure should be like this.
     ```
     surface6
