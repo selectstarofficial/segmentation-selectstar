@@ -141,24 +141,24 @@ Trained on TitanXP x 4
 2. Check settings.py options.
 3. Run evaluate.py
 
-    ### Performance
-    
-    Result of 2000 random selected validation set.
-    
-    (fwIoU: Frequency Weighted Intersection over Union)
-    
-    Acc | Acc_class | mIoU | fwIoU
-    --- | --- | --- | ---
-    91.46% | 84.74% | 77.29% | 84.34%
-    
-    IoU of each class
-    
-    Class | IoU
-    --- | ---
-    background|85.40%
-    bike_lane|64.78%
-    caution_zone|57.19%
-    crosswalk|80.21%
-    guide_block|81.34%
-    roadway|85.69%
-    sidewalk|86.45%
+### Performance
+
+Result of 2000 random selected validation set.
+
+(fwIoU: Frequency Weighted Intersection over Union)
+
+Acc | Acc_class | mIoU | fwIoU
+--- | --- | --- | ---
+91.46% | 84.74% | 77.29% | 84.34%
+
+IoU of each class
+
+Class | IoU
+--- | ---
+background|85.40%
+bike_lane|64.78%
+caution_zone|57.19%
+crosswalk|80.21%
+guide_block|81.34%
+roadway|85.69%
+sidewalk|86.45%
