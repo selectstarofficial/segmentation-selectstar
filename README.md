@@ -114,6 +114,15 @@ Modified to run NIA SurfaceMasking dataset by yoongi@selectstar.ai
     3. On multi-gpu: ```CUDA_VISIBLE_DEVICES=0,1,2,3 python3 train.py```
 
 
+# Download Trained Weights
+[Model Weights](https://drive.google.com/file/d/1Y8RhV3hWEoE4mqbriGbAyMDQMIaQdrnb/view?usp=sharing)
+
+[Settings for Reproduction](https://drive.google.com/drive/folders/16Pu_N7TOJN6NA9d92ohREWsVy9cWRH1i?usp=sharing)
+
+![](docs/imgs/logs.png)
+Trained on TitanXP x 4
+
+
 # Predict
 1. Prepare 'mp4 video' or 'jpg images' to predict. And put it into 'input' directory.
 2. Prepare trained model like ```model_iou_77.pth.tar```
