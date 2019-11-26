@@ -18,6 +18,14 @@ This is a prototype model of **Pedestrian zone detection for blind people**.
 Separates **sidewalk** and **driveway** areas using **Semantic Segmentation**.
 
 
+# Model
+
+### DeepLab v3+
+![](docs/imgs/deeplabv3p.jpg)
+
+[Paper] https://arxiv.org/abs/1802.02611
+
+
 # Training Surface Masking Dataset
 
 1. **Download NIA Surface Masking dataset from AIhub.** (Not yet tested)
