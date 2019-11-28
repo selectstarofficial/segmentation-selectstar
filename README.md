@@ -28,7 +28,7 @@ Modified to run NIA SurfaceMasking dataset by yoongi@selectstar.ai
 
 # Training Surface Masking Dataset
 
-1. **Download NIA Surface Masking dataset from AIhub.** (Not yet tested)
+1. **Download NIA Surface Masking dataset from AIhub.** (Not yet published)
 
     The Original NIA Surface Masking dataset consists of the following classes:
     
@@ -118,6 +118,8 @@ Modified to run NIA SurfaceMasking dataset by yoongi@selectstar.ai
 [Model Weights](https://drive.google.com/file/d/1Y8RhV3hWEoE4mqbriGbAyMDQMIaQdrnb/view?usp=sharing)
 
 Download and put it into ```./run/surface/deeplab/model_iou_77.pth.tar```
+
+(Just create directory or Edit settings.py -> checkpoint, predict.py -> MODEL_PATH)
 
 [Settings for Reproduction](https://drive.google.com/drive/folders/16Pu_N7TOJN6NA9d92ohREWsVy9cWRH1i?usp=sharing)
 
